@@ -1,0 +1,93 @@
+#include <bits/stdc++.h> 
+using namespace std;
+//MEMOISATION
+//Time Complexity: O(N)
+
+//Reason: The overlapping subproblems will return the answer in constant time O(1). Therefore the total number of new subproblems we solve is ‘n’. Hence total time complexity is O(N).
+
+//Space Complexity: O(N)
+
+//Reason: We are using a recursion stack space(O(N)) and an array (again O(N)). Therefore total space complexity will be O(N) + O(N) ≈ O(N)
+int frog(int n,vector<int> &heights,vector<int> &dp)
+{
+    if(n==0)
+        return 0;
+    if(n<=1)
+        return abs(heights[1]-heights[0]);
+    if(dp[n]!=-1)
+        return dp[n];
+    int os=frog(n-1,heights,dp)+abs(heights[n]-heights[n-1]);
+    int ts=frog(n-2,heights,dp)+abs(heights[n]-heights[n-2]);
+    return dp[n]=min(os,ts);
+}
+int frogJump(int n, vector<int> &heights)
+{
+    //TABULATION 
+//     Time Complexity: O(N)
+
+// Reason: We are running a simple iterative loop
+
+// Space Complexity: O(N)
+
+// Reason: We are using an external array of size ‘n+1’.
+    
+    
+    
+    // Write your code here.
+//     vector<int> dp(n,0);
+//     dp[0]=0;
+//     for(int i=1;i<n;i++)
+//     {
+//         int os=    dp[i-1]+   abs(heights[i]-heights[i-1]);
+//         int ts=INT_MAX;
+//         if(i>1)
+//             ts=     dp[i-2]+   abs(heights[i]-heights[i-2]);
+//         dp[i]=min(os,ts);
+        
+//      }
+//  return dp[n-1];
+
+
+
+
+
+ //SPACE OPTIMISATION
+// Time Complexity: O(N)
+
+// Reason: We are running a simple iterative loop
+
+// Space Complexity: O(1)
+
+// Reason: We are not using any extra space
+
+
+
+
+
+    int cur=0,pre1=0,pre2=0;
+     for(int i=1;i<n;i++)
+    {
+        int os=    pre1+   abs(heights[i]-heights[i-1]);
+        int ts=INT_MAX;
+        if(i>1)
+            ts=    pre2+   abs(heights[i]-heights[i-2]);
+        cur=min(os,ts);
+         pre2=pre1;
+         pre1=cur;
+         
+        
+     }
+    return cur;
+    
+}
+int main()
+{
+    int n;
+    cin>>n;
+    vector<int> heights(n);
+    for(int i=0;i<n;i++)
+    {
+        cin>>heights[i];
+    }
+    cout<<frogJump(n,heights);
+}
